@@ -3,50 +3,55 @@
     import { goto } from '$app/navigation';
     import { kioskState } from '$lib/store.svelte.js';
 
+    let { data } = $props();
+
     let scanMessage = $state("Scan je lidkaart om te starten");
     let isError = $state(false);
     let isProcessing = $state(false);
 
+    const performScan = async (barcode: string) => {
+        if (isProcessing) return;
+        isProcessing = true;
+        scanMessage = "Lidkaart herkend... Even geduld.";
+        isError = false;
+        
+        try {
+            const res = await fetch('/api/auth/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ barcode })
+            });
+            
+            const apiData = await res.json();
+            
+            if (res.ok && apiData.member) {
+                kioskState.member = apiData.member;
+                goto('/menu');
+            } else {
+                isError = true;
+                scanMessage = apiData.error || 'Kaart niet herkend';
+                setTimeout(() => {
+                    scanMessage = "Scan je lidkaart om te starten";
+                    isError = false;
+                    isProcessing = false;
+                }, 3000);
+            }
+        } catch (err) {
+            isError = true;
+            scanMessage = 'Netwerkfout bij inloggen';
+            setTimeout(() => {
+                scanMessage = "Scan je lidkaart om te starten";
+                isError = false;
+                isProcessing = false;
+            }, 3000);
+        }
+    };
+
     onMount(() => {
         const handleScan = async (e: CustomEvent<string>) => {
-            if (isProcessing) return;
             const barcode = e.detail;
-            
             if (barcode) {
-                isProcessing = true;
-                scanMessage = "Lidkaart herkend... Even geduld.";
-                isError = false;
-                
-                try {
-                    const res = await fetch('/api/auth/scan', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ barcode })
-                    });
-                    
-                    const data = await res.json();
-                    
-                    if (res.ok && data.member) {
-                        kioskState.member = data.member;
-                        goto('/menu');
-                    } else {
-                        isError = true;
-                        scanMessage = data.error || 'Kaart niet herkend';
-                        setTimeout(() => {
-                            scanMessage = "Scan je lidkaart om te starten";
-                            isError = false;
-                            isProcessing = false;
-                        }, 3000);
-                    }
-                } catch (err) {
-                    isError = true;
-                    scanMessage = 'Netwerkfout bij inloggen';
-                    setTimeout(() => {
-                        scanMessage = "Scan je lidkaart om te starten";
-                        isError = false;
-                        isProcessing = false;
-                    }, 3000);
-                }
+                await performScan(barcode);
             }
         };
 
@@ -69,4 +74,17 @@
             {/if}
         </p>
     </div>
+
+    {#if data.isTestMode}
+        <div class="test-panel" style="margin-top: 2rem; border: 2px dashed #f00; padding: 1rem; border-radius: 1rem;">
+            <h3 style="color: #f00; margin-bottom: 1rem;">TEST MODE ACTIEF</h3>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                {#each data.testCards as card}
+                    <button class="secondary outline" onclick={() => performScan(card.card_identifier)}>
+                        Inloggen als {card.full_name}
+                    </button>
+                {/each}
+            </div>
+        </div>
+    {/if}
 </div>

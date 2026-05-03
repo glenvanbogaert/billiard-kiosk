@@ -11,6 +11,8 @@ services:
       POSTGRES_DB: billiard
       POSTGRES_USER: billiard_root
       POSTGRES_PASSWORD: change_me_strong_random
+    ports:
+      - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
     networks:
