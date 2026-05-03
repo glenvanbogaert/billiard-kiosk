@@ -15,6 +15,7 @@
 			<li><a href="/voorraad">Voorraad</a></li>
 			<li><a href="/topups">Top-ups</a></li>
 			<li><a href="/verkopen">Verkopen</a></li>
+			<li><a href="/instellingen">Instellingen</a></li>
 			{#if data.user}
 				<li>
 					<a href="/logout" data-sveltekit-preload-data="off" onclick={(e) => {
