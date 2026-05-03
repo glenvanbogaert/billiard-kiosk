@@ -1,0 +1,10 @@
+@import '@picocss/pico/css/pico.indigo.min.css';
+
+:root {
+    --primary: #3949ab;
+}
+
+body {
+    background-color: var(--pico-background-color);
+    color: var(--pico-color);
+}

@@ -1,0 +1,43 @@
+@import '@picocss/pico/css/pico.indigo.min.css';
+
+:root {
+    --font-size-base: 1.375rem;      /* 22px */
+    --font-size-button: 1.75rem;     /* 28px */
+    --font-size-drink-name: 1.625rem;
+    --font-size-price: 2rem;
+    --font-size-balance: 2.5rem;     /* very prominent */
+    --font-size-heading: 2.25rem;
+    --font-size-receipt: 3rem;
+    --tap-target-min: 64px;
+    --tap-spacing: 20px;
+    --color-bg: #ffffff;
+    --color-text: #111111;
+    --color-primary: #3949ab;        /* indigo, AAA against white */
+    --color-success: #1b5e20;
+    --color-warning: #b26a00;
+    --color-error: #b71c1c;
+    --layout-cart-sidebar-width: 28%;
+}
+
+body {
+    font-size: var(--font-size-base);
+    -webkit-user-select: none;
+    user-select: none;
+    overscroll-behavior: none;
+    touch-action: manipulation;
+    cursor: none;                    /* hide mouse cursor in kiosk */
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+button, [role="button"], a.button {
+    min-height: var(--tap-target-min);
+    min-width: var(--tap-target-min);
+    font-size: var(--font-size-button);
+    touch-action: manipulation;
+}
+
+button:active { 
+    transform: scale(0.97); 
+    transition: transform 80ms; 
+}
