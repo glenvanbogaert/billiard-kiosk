@@ -1,0 +1,74 @@
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U billiard_root -d billiard"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: billiard
+      POSTGRES_USER: billiard_root
+      POSTGRES_PASSWORD: change_me_strong_random
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - billiard_internal
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - billiard_internal
+
+  # Kiosk app placeholder
+  # kiosk:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/kiosk/Dockerfile
+  #   restart: unless-stopped
+  #   networks:
+  #     - billiard_internal
+  #   depends_on:
+  #     - postgres
+
+  # Admin app placeholder
+  # admin:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/admin/Dockerfile
+  #   restart: unless-stopped
+  #   networks:
+  #     - billiard_internal
+  #   depends_on:
+  #     - postgres
+
+  # Worker app placeholder
+  # worker:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/worker/Dockerfile
+  #   restart: unless-stopped
+  #   networks:
+  #     - billiard_internal
+  #   depends_on:
+  #     - postgres
+
+volumes:
+  pg_data:
+  caddy_data:
+  caddy_config:
+  drink_images:
+  backups:
+
+networks:
+  billiard_internal:
+    driver: bridge
