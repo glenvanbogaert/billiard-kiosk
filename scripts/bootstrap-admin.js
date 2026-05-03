@@ -1,4 +1,4 @@
-import { createDbClient } from '../packages/shared/dist/db.js';
+import { createDbClient } from '../packages/shared/src/db.ts';
 import { hash } from '@node-rs/argon2';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';

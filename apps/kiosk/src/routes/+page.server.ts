@@ -1,8 +1,7 @@
 import { db } from '$lib/server/db.js';
-import { env } from '$env/dynamic/private';
 
 export const load = async () => {
-    const isTestMode = env.KIOSK_TEST_MODE === 'true';
+    const isTestMode = process.env.KIOSK_TEST_MODE === 'true';
     
     if (isTestMode) {
         const testCards = await db`

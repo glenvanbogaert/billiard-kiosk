@@ -3,10 +3,10 @@ import { fail } from '@sveltejs/kit';
 
 export const load = async () => {
     const topups = await db`
-        SELECT t.id, t.amount, t.method, t.status, t.created_at, m.full_name
+        SELECT t.id, t.amount, t.method, t.status, t.initiated_at, m.full_name
         FROM top_ups t
         JOIN members m ON t.member_id = m.id
-        ORDER BY t.created_at DESC
+        ORDER BY t.initiated_at DESC
         LIMIT 50
     `;
     return { topups };
@@ -27,19 +27,19 @@ export const actions = {
                     WHERE id = ${topupId} FOR UPDATE
                 `;
 
-                if (!topup || topup.status === 'paid') {
+                if (!topup || topup.status === 'paid_manual_admin') {
                     throw new Error('Top-up niet gevonden of al betaald');
                 }
 
                 await sql`
                     UPDATE top_ups 
-                    SET status = 'paid', verified_at = now() 
+                    SET status = 'paid_manual_admin', completed_at = now() 
                     WHERE id = ${topup.id}
                 `;
 
                 await sql`
-                    INSERT INTO balance_transactions (member_id, delta, type, related_top_up_id)
-                    VALUES (${topup.member_id}, ${topup.amount}, 'top_up_credit', ${topup.id})
+                    INSERT INTO balance_transactions (member_id, delta, type, related_topup_id)
+                    VALUES (${topup.member_id}, ${topup.amount}, 'topup_paid', ${topup.id})
                 `;
             });
             return { success: true };

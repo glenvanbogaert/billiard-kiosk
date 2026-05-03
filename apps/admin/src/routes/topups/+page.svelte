@@ -13,46 +13,54 @@
     {#if form?.error}
         <p style="color: var(--color-error);">{form.error}</p>
     {/if}
+
+    {#if form?.success}
+        <p style="color: var(--color-success);">Top-up succesvol gemarkeerd als betaald!</p>
+    {/if}
     
-    <div class="overflow-auto">
-        <table class="striped">
-            <thead>
-                <tr>
-                    <th>Datum</th>
-                    <th>Lid</th>
-                    <th>Bedrag</th>
-                    <th>Methode</th>
-                    <th>Status</th>
-                    <th>Acties</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each data.topups as topup}
+    {#if data.topups.length === 0}
+        <p>Geen top-ups gevonden.</p>
+    {:else}
+        <div class="overflow-auto">
+            <table class="striped">
+                <thead>
                     <tr>
-                        <td>{formatDate(topup.created_at)}</td>
-                        <td><strong>{topup.full_name}</strong></td>
-                        <td>{formatPrice(topup.amount)}</td>
-                        <td>{topup.method}</td>
-                        <td>
-                            <span class="badge {topup.status === 'paid' ? 'success' : 'warning'}">
-                                {topup.status}
-                            </span>
-                        </td>
-                        <td>
-                            {#if topup.status !== 'paid'}
-                                <form method="POST" action="?/markPaid" use:enhance style="margin: 0;">
-                                    <input type="hidden" name="topupId" value={topup.id} />
-                                    <button type="submit" class="outline" style="padding: 0.25rem 0.5rem; margin: 0; font-size: 0.8rem;">
-                                        Markeer Betaald
-                                    </button>
-                                </form>
-                            {/if}
-                        </td>
+                        <th>Datum</th>
+                        <th>Lid</th>
+                        <th>Bedrag</th>
+                        <th>Methode</th>
+                        <th>Status</th>
+                        <th>Acties</th>
                     </tr>
-                {/each}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    {#each data.topups as topup}
+                        <tr>
+                            <td>{formatDate(topup.initiated_at)}</td>
+                            <td><strong>{topup.full_name}</strong></td>
+                            <td>{formatPrice(topup.amount)}</td>
+                            <td>{topup.method}</td>
+                            <td>
+                                <span class="badge {topup.status.startsWith('paid') ? 'success' : 'warning'}">
+                                    {topup.status}
+                                </span>
+                            </td>
+                            <td>
+                                {#if !topup.status.startsWith('paid')}
+                                    <form method="POST" action="?/markPaid" use:enhance style="margin: 0;">
+                                        <input type="hidden" name="topupId" value={topup.id} />
+                                        <button type="submit" class="outline" style="padding: 0.25rem 0.5rem; margin: 0; font-size: 0.8rem;">
+                                            Markeer Betaald
+                                        </button>
+                                    </form>
+                                {/if}
+                            </td>
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
+        </div>
+    {/if}
 </article>
 
 <style>

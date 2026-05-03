@@ -1,12 +1,54 @@
 <script lang="ts">
-    let { data } = $props();
+    import { enhance } from '$app/forms';
+    let { data, form } = $props();
+    let showAddForm = $state(false);
     const formatPrice = (price: number | string) => `€${parseFloat(price as string).toFixed(2)}`;
 </script>
 
 <article>
     <header style="display: flex; justify-content: space-between; align-items: center;">
         <h2>Leden</h2>
+        <button onclick={() => showAddForm = !showAddForm}>
+            {showAddForm ? 'Annuleren' : '+ Nieuw Lid'}
+        </button>
     </header>
+
+    {#if form?.error}
+        <p style="color: var(--color-error);">{form.error}</p>
+    {/if}
+
+    {#if form?.success}
+        <p style="color: var(--color-success);">Lid succesvol toegevoegd!</p>
+    {/if}
+
+    {#if showAddForm}
+        <article style="border: 1px solid var(--pico-muted-border-color); padding: 1.5rem; margin-bottom: 1rem;">
+            <h3>Nieuw Lid Toevoegen</h3>
+            <form method="POST" action="?/addMember" use:enhance>
+                <div class="grid">
+                    <label>
+                        Volledige Naam *
+                        <input type="text" name="fullName" required placeholder="Jan Peeters" />
+                    </label>
+                    <label>
+                        Email
+                        <input type="email" name="email" placeholder="jan@example.com" />
+                    </label>
+                </div>
+                <div class="grid">
+                    <label>
+                        Geboortedatum *
+                        <input type="date" name="dateOfBirth" required />
+                    </label>
+                    <label>
+                        Kaartnummer (optioneel)
+                        <input type="text" name="cardIdentifier" placeholder="CARD-XXX-001" />
+                    </label>
+                </div>
+                <button type="submit">Lid Toevoegen</button>
+            </form>
+        </article>
+    {/if}
     
     <div class="overflow-auto">
         <table class="striped">
@@ -23,7 +65,7 @@
                 {#each data.members as member}
                     <tr>
                         <td><strong>{member.full_name}</strong></td>
-                        <td>{member.email}</td>
+                        <td>{member.email || '—'}</td>
                         <td>
                             <span class="badge {member.status === 'active' ? 'success' : 'error'}">
                                 {member.status}
