@@ -3,6 +3,7 @@
     let { data, form } = $props();
     let showAddForm = $state(false);
     const formatPrice = (price: number | string) => `€${parseFloat(price as string).toFixed(2)}`;
+    const formatDate = (date: string) => new Date(date).toLocaleDateString('nl-BE');
 </script>
 
 <article>
@@ -56,6 +57,7 @@
                 <tr>
                     <th>Naam</th>
                     <th>Email</th>
+                    <th>Geboortedatum</th>
                     <th>Status</th>
                     <th>Saldo</th>
                     <th>Opwaardeer Methode</th>
@@ -66,6 +68,7 @@
                     <tr>
                         <td><strong>{member.full_name}</strong></td>
                         <td>{member.email || '—'}</td>
+                        <td>{formatDate(member.date_of_birth)}</td>
                         <td>
                             <span class="badge {member.status === 'active' ? 'success' : 'error'}">
                                 {member.status}

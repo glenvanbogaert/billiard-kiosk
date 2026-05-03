@@ -2,7 +2,8 @@ import { db } from '$lib/server/db.js';
 
 export const load = async () => {
     const isTestMode = process.env.KIOSK_TEST_MODE === 'true';
-    
+    const clubName = process.env.PUBLIC_CLUB_NAME || 'Wase Biljart Belangen';
+
     if (isTestMode) {
         const testCards = await db`
             SELECT m.id, m.full_name, mc.card_identifier
@@ -12,12 +13,14 @@ export const load = async () => {
         `;
         return {
             isTestMode,
-            testCards
+            testCards,
+            clubName
         };
     }
-    
+
     return {
         isTestMode: false,
-        testCards: []
+        testCards: [],
+        clubName
     };
 };

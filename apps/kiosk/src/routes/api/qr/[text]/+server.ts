@@ -15,7 +15,7 @@ export const GET = async ({ params }) => {
     }, {} as Record<string, string>);
 
     const qrBuffer = await renderEPCQR({
-        beneficiaryName: settings['club_beneficiary_name'] || 'Biljartclub Wortegem VZW',
+        beneficiaryName: settings['club_beneficiary_name'] || 'Wase Biljart Belangen',
         iban: settings['club_iban'] || 'BE00000000000000',
         bic: settings['club_bic'],
         amount: parseFloat(topup.amount),

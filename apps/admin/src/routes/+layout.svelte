@@ -15,17 +15,16 @@
 			<li><a href="/voorraad">Voorraad</a></li>
 			<li><a href="/topups">Top-ups</a></li>
 			<li><a href="/verkopen">Verkopen</a></li>
-			<li>
-				{#if data.user}
-					<form method="POST" action="/logout" style="margin: 0;">
-						<button type="submit" class="outline" style="margin: 0; padding: 0.25rem 0.75rem;">
-							Uitloggen
-						</button>
-					</form>
-				{:else}
-					<a href="/login">Login</a>
-				{/if}
-			</li>
+			{#if data.user}
+				<li>
+					<a href="/logout" data-sveltekit-preload-data="off" onclick={(e) => {
+						e.preventDefault();
+						fetch('/logout', { method: 'POST' }).then(() => window.location.href = '/login');
+					}}>Uitloggen</a>
+				</li>
+			{:else}
+				<li><a href="/login">Login</a></li>
+			{/if}
 		</ul>
 	</nav>
 	{@render children()}

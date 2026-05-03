@@ -444,10 +444,10 @@ CREATE TABLE settings (
 -- 'low_stock_default_threshold'         : 10
 -- 'low_stock_batch_window_minutes'      : 30
 -- 'gdpr_consent_version'                : 'v1.0-2026-05'
--- 'club_name'                           : 'Biljartclub Wortegem'
+-- 'club_name'                           : 'Wase Biljart Belangen'
 -- 'club_iban'                           : 'BE00 0000 0000 0000'
 -- 'club_bic'                            : 'GKCCBEBB'
--- 'club_beneficiary_name'               : 'Biljartclub Wortegem VZW'
+-- 'club_beneficiary_name'               : 'Wase Biljart Belangen VZW'
 -- 'club_address_lines'                  : ['Adres lijn 1', 'Adres lijn 2']
 -- 'transaction_retention_years'         : 7
 ```
@@ -1323,7 +1323,7 @@ DATABASE_URL_ADMIN=postgresql://billiard_admin:change_me@postgres:5432/billiard
 DATABASE_URL_WORKER=postgresql://billiard_worker:change_me@postgres:5432/billiard
 
 # ─── App ─────────────────────────────────────────────────────────────
-PUBLIC_CLUB_NAME=Biljartclub Wortegem
+PUBLIC_CLUB_NAME=Wase Biljart Belangen
 KIOSK_PORT=3000
 ADMIN_PORT=3000
 SESSION_SECRET=<64 random hex chars>
@@ -1335,11 +1335,11 @@ SMTP_HOST=smtp-relay.brevo.com
 SMTP_PORT=587
 SMTP_USER=...
 SMTP_PASSWORD=...
-SMTP_FROM="Biljartclub Wortegem <noreply@example.be>"
+SMTP_FROM="Wase Biljart Belangen <noreply@example.be>"
 
 # ─── ntfy.sh ─────────────────────────────────────────────────────────
 NTFY_SERVER=https://ntfy.sh
-NTFY_TOPIC=biljartclub-wortegem-<random-suffix>
+NTFY_TOPIC=Wase Biljart Belangen-<random-suffix>
 
 # ─── Backups ─────────────────────────────────────────────────────────
 RCLONE_REMOTE=b2:billiard-backups
