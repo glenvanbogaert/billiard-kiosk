@@ -9,6 +9,10 @@
     "dev": "pnpm --parallel --filter \"./apps/*\" run dev"
   },
   "dependencies": {
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/qrcode": "^1.5.6"
   }
 }

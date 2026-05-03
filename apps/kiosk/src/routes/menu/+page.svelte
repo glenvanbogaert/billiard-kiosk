@@ -97,6 +97,9 @@
             >
                 Afrekenen
             </button>
+            <button class="topup-btn secondary outline" onclick={() => goto('/topup')}>
+                Saldo opladen
+            </button>
             <button class="cancel-btn secondary outline" onclick={() => kioskState.clearSession()}>
                 Annuleren
             </button>
@@ -161,6 +164,7 @@
     
     .total-row { display: flex; justify-content: space-between; font-size: 2rem; margin-bottom: 1rem; }
     .checkout-btn { width: 100%; height: 80px; font-size: 2rem; margin-bottom: 1rem; }
+    .topup-btn { width: 100%; height: 64px; margin-bottom: 0.5rem; }
     .cancel-btn { width: 100%; height: 64px; }
 
     .product-area { flex: 1; display: flex; flex-direction: column; padding: 1rem; background-color: white; overflow: hidden; }
